@@ -130,7 +130,7 @@ void TC0_CH0_TimerCallbackRegister(TC_TIMER_CALLBACK callback, uintptr_t context
 }
 
 /* Interrupt handler for Channel 0 */
-void __attribute__((used)) TC0_CH0_InterruptHandler(void)
+void __attribute__((used)) TC0(void)
 {
     TC_TIMER_STATUS timer_status = (TC_TIMER_STATUS)(TC0_REGS->TC_CHANNEL[0].TC_SR & TC_TIMER_STATUS_MSK);
 

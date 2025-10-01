@@ -81,7 +81,8 @@ typedef struct
 #if defined(__IAR_SYSTEMS_ICC__)
   static __attribute__((__aligned__(8)))  DRV_PIC32CGMAC_HW_DCPT_ARRAY gmac_dcpt_array @DRV_GMAC_DESCRIPTOR_ADDRESS;
 #elif defined(__GNUC__)
-  static __attribute__((__aligned__(8))) __attribute__((space(data),address(DRV_GMAC_DESCRIPTOR_ADDRESS))) DRV_PIC32CGMAC_HW_DCPT_ARRAY gmac_dcpt_array;
+//  static __attribute__((__aligned__(8))) __attribute__((space(data),address(DRV_GMAC_DESCRIPTOR_ADDRESS))) DRV_PIC32CGMAC_HW_DCPT_ARRAY gmac_dcpt_array;
+static __attribute__((__aligned__(8))) DRV_PIC32CGMAC_HW_DCPT_ARRAY gmac_dcpt_array;
 #endif
 
 DRV_GMAC_QUEUE gmac_queue[DRV_GMAC_NUMBER_OF_QUEUES];
@@ -1414,7 +1415,8 @@ void DRV_PIC32CGMAC_LibDisableInterrupt(DRV_GMAC_DRIVER *pMACDrv, GMAC_QUE_LIST 
  * GMAC Interrupt Service Routines(ISR)
  *****************************************************************************/
 //GMAC interrupt handler for Priority Queue 0
-void GMAC_InterruptHandler(void)
+//void GMAC_InterruptHandler(void)
+void GMAC(void)
 {
     GMAC_EVENTS  currEthEvents = (GMAC_EVENTS)GMAC_REGS->GMAC_ISR;
     
@@ -1427,7 +1429,8 @@ void GMAC_InterruptHandler(void)
 }
 
 //GMAC interrupt handler for Priority Queue 1
-void GMAC_Q1_Handler(void)
+//void GMAC_Q1_Handler(void)
+void GMAC_Q1(void)
 {
     GMAC_EVENTS  currEthEvents = (GMAC_EVENTS)GMAC_REGS->GMAC_ISRPQ[0];
 
@@ -1440,7 +1443,8 @@ void GMAC_Q1_Handler(void)
 }
 
 //GMAC interrupt handler for Priority Queue 2
-void GMAC_Q2_Handler(void)
+//void GMAC_Q2_Handler(void)
+void GMAC_Q2(void)  
 {
     GMAC_EVENTS  currEthEvents = (GMAC_EVENTS)GMAC_REGS->GMAC_ISRPQ[1];
 
@@ -1453,7 +1457,8 @@ void GMAC_Q2_Handler(void)
 }
 
 //GMAC interrupt handler for Priority Queue 3
-void GMAC_Q3_Handler(void)
+//void GMAC_Q3_Handler(void)
+void GMAC_Q3(void)  
 {
     GMAC_EVENTS  currEthEvents = (GMAC_EVENTS)GMAC_REGS->GMAC_ISRPQ[2];
 
@@ -1466,7 +1471,8 @@ void GMAC_Q3_Handler(void)
 }
 
 //GMAC interrupt handler for Priority Queue 4
-void GMAC_Q4_Handler(void)
+//void GMAC_Q4_Handler(void)
+void GMAC_Q4(void)  
 {
     GMAC_EVENTS  currEthEvents = (GMAC_EVENTS)GMAC_REGS->GMAC_ISRPQ[3];
 
@@ -1479,7 +1485,8 @@ void GMAC_Q4_Handler(void)
 }
 
 //GMAC interrupt handler for Priority Queue 5
-void GMAC_Q5_Handler(void)
+//void GMAC_Q5_Handler(void)
+void GMAC_Q5(void)
 {
     GMAC_EVENTS  currEthEvents = (GMAC_EVENTS)GMAC_REGS->GMAC_ISRPQ[4];
 

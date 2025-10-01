@@ -508,7 +508,7 @@ static const SYS_DEBUG_INIT debugInit =
 
 void SYS_Initialize ( void* data )
 {
-
+    MPU_Initialize();
     /* MISRAC 2012 deviation block start */
     /* MISRA C-2012 Rule 2.2 deviated in this file.  Deviation record ID -  H3_MISRAC_2012_R_2_2_DR_1 */
 
@@ -517,7 +517,7 @@ void SYS_Initialize ( void* data )
 
     PIO_Initialize();
 
-
+    MCAN0_Initialize();
 
   
 
@@ -570,7 +570,6 @@ void SYS_Initialize ( void* data )
    SYS_ASSERT(sysObj.tcpip != SYS_MODULE_OBJ_INVALID, "TCPIP_STACK_Init Failed" );
 
 
-    CRYPT_WCCB_Initialize();
 
     /* MISRAC 2012 deviation block end */
     APP_Initialize();

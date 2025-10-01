@@ -83,9 +83,9 @@ extern "C" {
 #define DCACHE_INVALIDATE()                            SCB_InvalidateDCache()
 #define DCACHE_CLEAN()                                 SCB_CleanDCache()
 #define DCACHE_CLEAN_INVALIDATE()                      SCB_CleanInvalidateDCache()
-#define DCACHE_CLEAN_BY_ADDR(addr,sz)                  SCB_CleanDCache_by_Addr(addr,sz)
-#define DCACHE_INVALIDATE_BY_ADDR(addr,sz)             SCB_InvalidateDCache_by_Addr(addr,sz)
-#define DCACHE_CLEAN_INVALIDATE_BY_ADDR(addr,sz)       SCB_CleanInvalidateDCache_by_Addr(addr,sz)
+#define DCACHE_CLEAN_BY_ADDR(addr,sz)                  //SCB_CleanDCache_by_Addr(addr,sz)
+#define DCACHE_INVALIDATE_BY_ADDR(addr,sz)             //SCB_InvalidateDCache_by_Addr(addr,sz)
+#define DCACHE_CLEAN_INVALIDATE_BY_ADDR(addr,sz)       //SCB_CleanInvalidateDCache_by_Addr(addr,sz)
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

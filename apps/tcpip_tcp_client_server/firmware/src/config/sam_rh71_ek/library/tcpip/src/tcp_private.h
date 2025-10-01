@@ -54,6 +54,7 @@ Microchip or any third party.
 #define TCPIP_TCP_DEBUG_MASK_BASIC          (0x0001)
 #define TCPIP_TCP_DEBUG_MASK_TRACE_STATE    (0x0002)
 #define TCPIP_TCP_DEBUG_MASK_SEQ            (0x0004)
+#define TCPIP_TCP_DEBUG_MASK_WINDOW         (0x0008)
 
 #define TCPIP_TCP_DEBUG_MASK_RX_CHECK       (0x0100)
 

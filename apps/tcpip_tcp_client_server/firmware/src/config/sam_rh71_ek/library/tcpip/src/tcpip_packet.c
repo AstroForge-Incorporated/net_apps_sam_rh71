@@ -174,7 +174,7 @@ void TCPIP_PKT_Deinitialize(void)
 
 
 // acknowledges a packet
-void _TCPIP_PKT_PacketAcknowledge(TCPIP_MAC_PACKET* pPkt, TCPIP_MAC_PKT_ACK_RES ackRes, TCPIP_STACK_MODULE moduleId)
+void _TCPIP_PKT_PacketAcknowledge(TCPIP_MAC_PACKET* pPkt, TCPIP_MAC_PKT_ACK_RES ackRes, int moduleId)
 {
     if(ackRes != TCPIP_MAC_PKT_ACK_NONE)
     {
@@ -1390,6 +1390,3 @@ void TCPIP_PKT_FlightLogReset(bool resetMasks)
 }
 
 #endif  //  (TCPIP_PACKET_LOG_ENABLE)
-
-
-

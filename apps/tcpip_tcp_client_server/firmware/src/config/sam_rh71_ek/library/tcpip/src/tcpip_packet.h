@@ -505,7 +505,7 @@ void                _TCPIP_PKT_PacketFree(TCPIP_MAC_PACKET* pPkt);
 TCPIP_MAC_DATA_SEGMENT* _TCPIP_PKT_SegmentAlloc(uint16_t loadLen, TCPIP_MAC_SEGMENT_FLAGS flags);
 void                _TCPIP_PKT_SegmentFree(TCPIP_MAC_DATA_SEGMENT* pSeg);
 
-void                _TCPIP_PKT_PacketAcknowledge(TCPIP_MAC_PACKET* pPkt, TCPIP_MAC_PKT_ACK_RES ackRes, TCPIP_STACK_MODULE moduleId);
+void                _TCPIP_PKT_PacketAcknowledge(TCPIP_MAC_PACKET* pPkt, TCPIP_MAC_PKT_ACK_RES ackRes, int moduleId);
 
 
 // direct calls
@@ -557,5 +557,3 @@ static __inline__ bool __attribute__((always_inline)) TCPIP_PKT_TraceGetEntrySta
 
 
 #endif // __TCPIP_PACKET_H_
-
-

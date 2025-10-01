@@ -212,6 +212,8 @@ static void CLK_PeripheralClockInitialize(void)
     PMC_REGS->PMC_PCR = PMC_PCR_EN_Msk | PMC_PCR_CMD_Msk | PMC_PCR_PID(10U); /* PIO */
     PMC_REGS->PMC_PCR = PMC_PCR_EN_Msk | PMC_PCR_CMD_Msk | PMC_PCR_PID(25U); /* TC0_CHANNEL0 */
     PMC_REGS->PMC_PCR = PMC_PCR_EN_Msk | PMC_PCR_CMD_Msk | PMC_PCR_PID(69U); /* GMAC */
+    PMC_REGS->PMC_PCR = PMC_PCR_EN_Msk | PMC_PCR_CMD_Msk | PMC_PCR_PID(36)  /* MCAN0 */
+        | PMC_PCR_GCLKEN_Msk | PMC_PCR_GCLKCSS_MCK_CLK | PMC_PCR_GCLKDIV(0);
 }
 
 /*********************************************************************************
@@ -219,9 +221,6 @@ Clock Initialize
 *********************************************************************************/
 void CLOCK_Initialize( void )
 {
-    SCB_DisableDCache();
-    SCB_DisableICache();
-
     /* Initialize Slow Clock */
     CLK_SlowClockInitialize();
 
@@ -239,8 +238,4 @@ void CLOCK_Initialize( void )
 
     /* Initialize Peripheral Clock */
     CLK_PeripheralClockInitialize();
-
-
-    SCB_EnableDCache();
-    SCB_EnableICache();
 }

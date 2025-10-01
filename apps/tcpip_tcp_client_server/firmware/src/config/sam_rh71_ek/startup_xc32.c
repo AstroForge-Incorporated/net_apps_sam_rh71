@@ -23,7 +23,6 @@
 *******************************************************************************/
 // DOM-IGNORE-END
 
-#include <libpic32c.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include "device.h"
@@ -235,7 +234,7 @@ void __attribute__((optimize("-O1"),long_call))Dummy_App_Func(void)
  * \brief This is the code that gets called on processor reset.
  * To initialize the device, and call the main() routine.
  */
-void __attribute__((optimize("-O1"), section(".text.Reset_Handler"), long_call, noreturn)) Reset_Handler(void)
+void Reset_Handler(void)
 {
 #ifdef SCB_VTOR_TBLOFF_Msk
     uint32_t *pSrc;
@@ -264,34 +263,37 @@ void __attribute__((optimize("-O1"), section(".text.Reset_Handler"), long_call, 
 #endif
 
     /* Do this after the fpu is enabled so we can use fp regs */
-    TCM_EccInitialize();
-    FlexRAM_EccInitialize();
+    //TCM_EccInitialize();
+    //FlexRAM_EccInitialize();
 
     /* Enable TCM   */
-    TCM_Enable();
+    //TCM_Enable();
 
     /* Initialize data after TCM is enabled.
      * Data initialization from the XC32 .dinit template */
-    __pic32c_data_initialization();
+    //    __pic32c_data_initialization();
 
 
 #  ifdef SCB_VTOR_TBLOFF_Msk
     /*  Set the vector-table base address in FLASH */
+#if 0
     pSrc = (uint32_t *) & __svectors;
     SCB->VTOR = ((uint32_t) pSrc & SCB_VTOR_TBLOFF_Msk);
+#endif
 #  endif /* SCB_VTOR_TBLOFF_Msk */
 
     /* Initialize the C library */
-    __libc_init_array();
+    //    __libc_init_array();
 
     /* Initialize MPU */
     MPU_Initialize();
+    return;
 
     /* Enable ICache (CMSIS-Core API) */
-    SCB_EnableICache();
+    //SCB_EnableICache();
 
     /* Enable DCache (CMSIS-Core API)*/
-    SCB_EnableDCache();
+    //SCB_EnableDCache();
 
     /* Call the optional application-provided _on_bootstrap() function. */
     _on_bootstrap();
@@ -299,6 +301,8 @@ void __attribute__((optimize("-O1"), section(".text.Reset_Handler"), long_call, 
     /* Reserved for use by MPLAB XC32. */
     __xc32_on_bootstrap();
 
+    return;
+    
     /* Branch to application's main function */
     (void)main();
 

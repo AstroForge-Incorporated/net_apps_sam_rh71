@@ -292,12 +292,12 @@ bool TCPIP_Helper_StringToIPv6Address(const char * addStr, IPV6_ADDR * addr)
 
     memset(convAddr.v, 0, sizeof(convAddr));
 
-    while(isspace(*addStr))
+    while(isspace((int)*addStr))
     {   // skip leading space
         addStr++;
         len--;
     }
-    while(isspace(*(addStr + len - 1)))
+    while(isspace((int)*(addStr + len - 1)))
     {   // skip trailing space
         len--;
     }
@@ -324,13 +324,13 @@ bool TCPIP_Helper_StringToIPv6Address(const char * addStr, IPV6_ADDR * addr)
     }
 
     currentWord = 0;
-    while(isspace(*str))
+    while(isspace((int)*str))
     {   // skip leading space
         str++;
         len--;
     }
     endPtr = str + len;
-    while(isspace(*(endPtr - 1)))
+    while(isspace((int)*(endPtr - 1)))
     {   // skip trailing space
         endPtr--;
     }
@@ -668,7 +668,8 @@ TCPIP_MAC_POWER_MODE TCPIP_Helper_StringToPowerMode(const char* str)
 
 const char* TCPIP_Helper_PowerModeToString(TCPIP_MAC_POWER_MODE mode)
 {
-    if(mode >= 0 && mode < sizeof(TCPIP_MAC_POWER_TBL)/sizeof(*TCPIP_MAC_POWER_TBL))
+  int m = mode;
+  if(m >= 0 && m < sizeof(TCPIP_MAC_POWER_TBL)/sizeof(*TCPIP_MAC_POWER_TBL))
     {
         return (TCPIP_MAC_POWER_TBL + mode)->pwrName;
     }

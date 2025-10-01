@@ -3028,6 +3028,8 @@ uint16_t TCPIP_TCP_ArrayGet(TCP_SOCKET hTCP, uint8_t* buffer, uint16_t len)
         if(wGetReadyCount - len <= len)
         {   // Send a window update if we've run low on data
             pSkt->Flags.bTXASAPWithoutTimerReset = 1;
+            if ((TCPIP_TCP_DEBUG_LEVEL & TCPIP_TCP_DEBUG_MASK_WINDOW) != 0)
+                SYS_CONSOLE_PRINT("[Debug]: ASAP window update no timer\r\n");
         }
         else if(!pSkt->Flags.bTimer2Enabled)
             // If not already enabled, start a timer so a window 
@@ -3035,7 +3037,12 @@ uint16_t TCPIP_TCP_ArrayGet(TCP_SOCKET hTCP, uint8_t* buffer, uint16_t len)
         {
             pSkt->Flags.bTimer2Enabled = true;
             pSkt->eventTime2 = SYS_TMR_TickCountGet() + (TCPIP_TCP_WINDOW_UPDATE_TIMEOUT_VAL * sysTickFreq)/1000;
+            if ((TCPIP_TCP_DEBUG_LEVEL & TCPIP_TCP_DEBUG_MASK_WINDOW) != 0)
+                SYS_CONSOLE_PRINT("[Debug]: Start Win update timer\r\n");
         }
+    } else {
+        if ((TCPIP_TCP_DEBUG_LEVEL & TCPIP_TCP_DEBUG_MASK_WINDOW) != 0)
+            SYS_CONSOLE_PRINT("[Debug]: Start Win update timer\r\n");
     }
 
     return len;

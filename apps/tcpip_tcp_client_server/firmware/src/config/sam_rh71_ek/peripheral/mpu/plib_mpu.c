@@ -54,7 +54,7 @@ void MPU_Initialize(void)
     MPU->CTRL = 0;
 
     /*** Configure MPU Regions  ***/
-
+  #if 0
     /* Region 0 Name: ITCM, Base Address: 0x0, Size: 4MB  */
     MPU->RBAR = MPU_REGION(0U, 0x0U);
     MPU->RASR = MPU_REGION_SIZE(21U) | MPU_RASR_AP(MPU_RASR_AP_READWRITE_Val) | MPU_ATTR_NORMAL \
@@ -84,7 +84,7 @@ void MPU_Initialize(void)
     MPU->RBAR = MPU_REGION(5U, 0x18000000U);
     MPU->RASR = MPU_REGION_SIZE(27U) | MPU_RASR_AP(MPU_RASR_AP_READWRITE_Val) | MPU_ATTR_STRONGLY_ORDERED \
                 | MPU_ATTR_ENABLE  ;
-
+  #endif
     /* Region 6 Name: GMAC Descriptor, Base Address: 0x210bf000, Size: 4KB  */
     MPU->RBAR = MPU_REGION(6U, 0x210bf000U);
     MPU->RASR = MPU_REGION_SIZE(11U) | MPU_RASR_AP(MPU_RASR_AP_READWRITE_Val) | MPU_ATTR_NORMAL \
@@ -108,4 +108,3 @@ void MPU_Initialize(void)
     __DSB();
     __ISB();
 }
-

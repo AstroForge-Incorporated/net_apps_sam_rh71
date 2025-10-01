@@ -823,7 +823,7 @@ void static __attribute__((used)) FLEXCOM1_USART_ISR_TX_Handler( void )
     FLEXCOM1_REGS->FLEX_US_IDR = FLEX_US_IDR_TXRDY_Msk;
 }
 
-void __attribute__((used)) FLEXCOM1_InterruptHandler( void )
+void __attribute__((used)) FLEXCOM1(void) //_InterruptHandler( void )
 {
     /* Channel status */
     uint32_t channelStatus = FLEXCOM1_REGS->FLEX_US_CSR;

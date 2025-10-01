@@ -187,7 +187,7 @@ extern "C" {
 #define TCPIP_TCP_QUIET_TIME		        	    0
 #define TCPIP_TCP_COMMANDS   false
 #define TCPIP_TCP_EXTERN_PACKET_PROCESS   false
-#define TCPIP_TCP_DISABLE_CRYPTO_USAGE		        	    false
+#define TCPIP_TCP_DISABLE_CRYPTO_USAGE		        	    true
 
 
 
