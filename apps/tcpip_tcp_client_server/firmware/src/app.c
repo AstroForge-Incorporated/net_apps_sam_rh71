@@ -378,7 +378,7 @@ void _APP_ServerTasks()
     See prototype in app.h.
  */
 
-void APP_Tasks ( void )
+bool APP_Tasks ( void )
 {
     SYS_STATUS          tcpipStat;
     const char          *netName, *netBiosName;
@@ -434,7 +434,7 @@ void APP_Tasks ( void )
                 netH = TCPIP_STACK_IndexToNet(i);
                 if(!TCPIP_STACK_NetIsReady(netH))
                 {
-                    return;    // interface not ready yet!
+                    return false;    // interface not ready yet!
                 }
                 ipAddr.Val = TCPIP_STACK_NetAddress(netH);
                 if(dwLastIP[i].Val != ipAddr.Val)
@@ -444,7 +444,7 @@ void APP_Tasks ( void )
                     SYS_CONSOLE_MESSAGE(TCPIP_STACK_NetNameGet(netH));
                     SYS_CONSOLE_MESSAGE(" IP Address: ");
                     SYS_CONSOLE_PRINT("%d.%d.%d.%d \r\n", ipAddr.v[0], ipAddr.v[1], ipAddr.v[2], ipAddr.v[3]);
-                    SYS_CONSOLE_MESSAGE("Waiting for command type: openurl <url>\r\n");
+                    //SYS_CONSOLE_MESSAGE("Waiting for command type: openurl <url>\r\n");
                 }
                 appData.state = appData.clientState = APP_TCPIP_WAITING_FOR_COMMAND;
                 if(appData.serverSocket == INVALID_SOCKET)
@@ -458,10 +458,11 @@ void APP_Tasks ( void )
             break;
 
         default:
-            _APP_ClientTasks();
-            _APP_ServerTasks();
-            break;
+          //_APP_ClientTasks();
+          //_APP_ServerTasks();
+          return true;
     }
+    return false;
 }
  
 int32_t _APP_ParseUrl(char *uri, char **host, char **path, uint16_t * port)

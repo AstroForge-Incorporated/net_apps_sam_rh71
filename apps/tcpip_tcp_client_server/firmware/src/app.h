@@ -219,7 +219,7 @@ void APP_Initialize ( void );
     This routine must be called from SYS_Tasks() routine.
  */
 
-void APP_Tasks( void );
+bool APP_Tasks( void );
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
