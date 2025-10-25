@@ -59,25 +59,69 @@
 void PIO_Initialize ( void )
 {
 
- /* Port B Peripheral function GPIO configuration */
-   PIOB_REGS->PIO_MSKR = 0x80000U;
-   PIOB_REGS->PIO_CFGR = 0x0U;
+  /****************************************************************************
+   * CAN 
+   */
+ /* Port B Peripheral function C (CAN) configuration
+    PB4 CANTX1
+    PB5 CANRX1
+    PB6 CANTX0 
+    PB7 CANRX0
+  */
+   PIOB_REGS->PIO_MSKR = 0xf0U;
+   PIOB_REGS->PIO_CFGR = 0x3U;
 
- /* Port B Pin 19 configuration */
-   PIOB_REGS->PIO_MSKR = 0x80000U;
-   PIOB_REGS->PIO_CFGR = (PIOB_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
+ /* Port C Peripheral function GPIO configuration 
+    PC7 STBY (CAN0 transceiver)
+  */
+   PIOC_REGS->PIO_MSKR = 0x80U;
+   PIOC_REGS->PIO_CFGR = 0x0U;
 
- /* Port B Latch configuration */
-   PIOB_REGS->PIO_CODR = 0x80000U;
+ /* Port C Pin 7 configuration */
+   PIOC_REGS->PIO_MSKR = 0x80U;
+   PIOC_REGS->PIO_CFGR = (PIOC_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
 
- /* Port C Peripheral function B configuration */
-   PIOC_REGS->PIO_MSKR = 0x1ff800U;
+ /* Port C Latch configuration */
+   PIOC_REGS->PIO_CODR = 0x80U;
+
+ /* Port G Peripheral function GPIO configuration 
+    PG30 STBY (CAN1 transceiver)
+  */
+   PIOG_REGS->PIO_MSKR = 0x40000000U;
+   PIOG_REGS->PIO_CFGR = 0x0U;
+
+ /* Port G Pin 30 configuration */
+   PIOG_REGS->PIO_MSKR = 0x40000000U;
+   PIOG_REGS->PIO_CFGR = (PIOC_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
+
+ /* Port C Latch configuration */
+   PIOG_REGS->PIO_CODR = 0x80U;
+
+  /****************************************************************************
+   * GMAC 
+   */
+ /* Port C Peripheral function B configuration 
+    PC11 RXD1
+    PC12 RXD0
+    PC13 TXD1
+    PC14 TXD0
+    PC15 RXER
+    PC16 CRS_DV
+    PC17 TXEN
+    PC18 REF_CLK
+    PC19 MDIO
+    PC20 MDC
+  */
+   PIOC_REGS->PIO_MSKR = 0x101FF800U;
    PIOC_REGS->PIO_CFGR = 0x2U;
 
-
-
-
- /* Port F Peripheral function A configuration */
+  /****************************************************************************
+   * FLEXCOM 
+   */
+ /* Port F Peripheral function A configuration
+    PF29 FLEXCOM1_IO1 TXD
+    PF30 FLEXCOM1_IO0 RXD
+  */
    PIOF_REGS->PIO_MSKR = 0x60000000U;
    PIOF_REGS->PIO_CFGR = 0x1U;
 
