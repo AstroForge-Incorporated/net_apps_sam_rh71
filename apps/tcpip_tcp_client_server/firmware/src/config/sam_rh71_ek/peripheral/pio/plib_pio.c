@@ -59,31 +59,6 @@
 void PIO_Initialize ( void )
 {
 
-  /****************************************************************************
-   * CAN 
-   */
- /* Port B Peripheral function C (CAN) configuration
-    PB4 CANTX1
-    PB5 CANRX1
-    PB6 CANTX0 
-    PB7 CANRX0
-  */
-   PIOB_REGS->PIO_MSKR = 0xf0U;
-   PIOB_REGS->PIO_CFGR = 0x3U;
-
- /* Port C Peripheral function GPIO configuration 
-    PC7 STBY (CAN0 transceiver)
-  */
-   PIOC_REGS->PIO_MSKR = 0x80U;
-   PIOC_REGS->PIO_CFGR = 0x0U;
-
- /* Port C Pin 7 configuration */
-   PIOC_REGS->PIO_MSKR = 0x80U;
-   PIOC_REGS->PIO_CFGR = (PIOC_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
-
- /* Port C Latch configuration */
-   PIOC_REGS->PIO_CODR = 0x80U;
-
  /* Port G Peripheral function GPIO configuration 
     PG30 STBY (CAN1 transceiver)
   */

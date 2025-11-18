@@ -491,10 +491,6 @@ void SYS_Initialize ( void* data )
     PIO_Initialize();
 
     MCAN0_Initialize();
-
-  
-
- 
     TC0_CH0_TimerInitialize(); 
      
     
