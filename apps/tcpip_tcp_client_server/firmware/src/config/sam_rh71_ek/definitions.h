@@ -141,6 +141,36 @@ extern "C" {
 void SYS_Initialize( void *data );
 
 // *****************************************************************************
+/* TCP Initialization Function
+
+  Function:
+    void TCP_Initialize()
+
+  Summary:
+    Function that initializes the TCP stack
+
+  Description:
+    This function initializes the TCP stack in the system, including any drivers,
+    services, middleware, and applications.
+
+  Precondition:
+    None.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    TCP_Initialize();
+    </code>
+
+  Remarks:
+    This function will only be called once.
+*/
+
+void TCP_Initialize();
+
+// *****************************************************************************
 /* System Tasks Function
 
 Function:

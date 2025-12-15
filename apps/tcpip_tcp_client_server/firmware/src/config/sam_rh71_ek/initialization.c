@@ -531,20 +531,19 @@ void SYS_Initialize ( void* data )
     /* MISRAC 2012 deviation block end */
 
 
-   /* TCPIP Stack Initialization */
-   sysObj.tcpip = TCPIP_STACK_Init();
-   SYS_ASSERT(sysObj.tcpip != SYS_MODULE_OBJ_INVALID, "TCPIP_STACK_Init Failed" );
-
-
-
-    /* MISRAC 2012 deviation block end */
-    APP_Initialize();
-
-
     NVIC_Initialize();
 
 
     /* MISRAC 2012 deviation block end */
+}
+
+void TCP_Initialize() {
+   /* TCPIP Stack Initialization */
+   sysObj.tcpip = TCPIP_STACK_Init();
+   SYS_ASSERT(sysObj.tcpip != SYS_MODULE_OBJ_INVALID, "TCPIP_STACK_Init Failed" );
+
+   /* MISRAC 2012 deviation block end */
+   APP_Initialize();
 }
 
 /*******************************************************************************
