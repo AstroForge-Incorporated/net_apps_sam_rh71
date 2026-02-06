@@ -199,7 +199,7 @@ TCPIP_STACK_HEAP_INTERNAL_CONFIG tcpipHeapConfig =
 };
 
 
-const TCPIP_NETWORK_CONFIG __attribute__((unused))  TCPIP_HOSTS_CONFIGURATION[] =
+const TCPIP_NETWORK_CONFIG __attribute__((unused))  DEFAULT_TCPIP_HOSTS_CONFIGURATION[] =
 {
     /*** Network Configuration Index 0 ***/
     {
@@ -217,7 +217,7 @@ const TCPIP_NETWORK_CONFIG __attribute__((unused))  TCPIP_HOSTS_CONFIGURATION[] 
     },
 };
 
-const size_t TCPIP_HOSTS_CONFIGURATION_SIZE = sizeof (TCPIP_HOSTS_CONFIGURATION) / sizeof (*TCPIP_HOSTS_CONFIGURATION);
+const size_t DEFAULT_TCPIP_HOSTS_CONFIGURATION_SIZE = sizeof (DEFAULT_TCPIP_HOSTS_CONFIGURATION) / sizeof (*DEFAULT_TCPIP_HOSTS_CONFIGURATION);
 
 const TCPIP_STACK_MODULE_CONFIG TCPIP_STACK_MODULE_CONFIG_TBL [] =
 {
@@ -262,12 +262,16 @@ const size_t TCPIP_STACK_MODULE_CONFIG_TBL_SIZE = sizeof (TCPIP_STACK_MODULE_CON
  ********************************************************************/
 
 
-SYS_MODULE_OBJ TCPIP_STACK_Init(void)
+SYS_MODULE_OBJ TCPIP_STACK_Init(const char* mac_addr, const char* ip_addr)
 {
+    TCPIP_NETWORK_CONFIG net_config = DEFAULT_TCPIP_HOSTS_CONFIGURATION[0];
+    net_config.macAddr = mac_addr;
+    net_config.ipAddr = ip_addr;
+
     TCPIP_STACK_INIT    tcpipInit;
 
-    tcpipInit.pNetConf = TCPIP_HOSTS_CONFIGURATION;
-    tcpipInit.nNets = TCPIP_HOSTS_CONFIGURATION_SIZE;
+    tcpipInit.pNetConf = &net_config;
+    tcpipInit.nNets = DEFAULT_TCPIP_HOSTS_CONFIGURATION_SIZE;
     tcpipInit.pModConfig = TCPIP_STACK_MODULE_CONFIG_TBL;
     tcpipInit.nModules = TCPIP_STACK_MODULE_CONFIG_TBL_SIZE;
     tcpipInit.initCback = 0;
@@ -537,9 +541,9 @@ void SYS_Initialize ( void* data )
     /* MISRAC 2012 deviation block end */
 }
 
-void TCP_Initialize() {
+void TCP_Initialize(const char* mac_addr, const char* ip_addr) {
    /* TCPIP Stack Initialization */
-   sysObj.tcpip = TCPIP_STACK_Init();
+   sysObj.tcpip = TCPIP_STACK_Init(mac_addr, ip_addr);
    SYS_ASSERT(sysObj.tcpip != SYS_MODULE_OBJ_INVALID, "TCPIP_STACK_Init Failed" );
 
    /* MISRAC 2012 deviation block end */
