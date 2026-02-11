@@ -144,36 +144,31 @@ void SYS_Initialize( void *data );
 /* TCP Initialization Function
 
   Function:
-    void TCP_Initialize(const char* mac_addr, const char* ip_addr)
+    void TCP_Initialize()
 
   Summary:
     Function that initializes the TCP stack
 
   Description:
     This function initializes the TCP stack in the system, including any drivers,
-    services, middleware, and applications. The mac_addr and ip_addr parameters
-    configure the network interface address.
+    services, middleware, and applications.
 
   Precondition:
     None.
-
-  Parameters:
-    mac_addr - MAC address string (e.g. "00:04:25:1C:A0:02")
-    ip_addr  - IP address string (e.g. "192.168.20.6")
 
   Returns:
     None.
 
   Example:
     <code>
-    TCP_Initialize("00:04:25:1C:A0:02", "192.168.20.6");
+    TCP_Initialize();
     </code>
 
   Remarks:
     This function will only be called once.
 */
 
-void TCP_Initialize(const char* mac_addr, const char* ip_addr);
+void TCP_Initialize();
 
 // *****************************************************************************
 /* System Tasks Function

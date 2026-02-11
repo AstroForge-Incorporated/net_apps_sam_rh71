@@ -649,7 +649,7 @@ static const TCPIP_STACK_MODULE_ENTRY TCPIP_STACK_MODULE_ENTRY_TBL [] =
 };
 #endif  // (TCPIP_STACK_DOWN_OPERATION != 0)
 
-SYS_MODULE_OBJ TCPIP_STACK_Initialize(const SYS_MODULE_INDEX index, const SYS_MODULE_INIT * const init)
+SYS_MODULE_OBJ TCPIP_STACK_Initialize(const TCPIP_STACK_INIT * const init)
 {
 
     if(tcpipNetIf != 0)
@@ -675,9 +675,10 @@ SYS_MODULE_OBJ TCPIP_STACK_Initialize(const SYS_MODULE_INDEX index, const SYS_MO
     SYS_CONSOLE_MESSAGE(TCPIP_STACK_HDR_MESSAGE "Initialization Started \r\n");
 
     tcpip_stack_status = SYS_STATUS_BUSY;
-    if((tcpip_stack_init_cb = ((TCPIP_STACK_INIT*)init)->initCback) == 0)
+    
+    if((tcpip_stack_init_cb = init->initCback) == 0)
     {   // perform the immediate initialization
-        bool init_res = _TCPIP_DoInitialize((const TCPIP_STACK_INIT*)init);
+        bool init_res = _TCPIP_DoInitialize(init);
         return init_res ? (SYS_MODULE_OBJ)&tcpip_stack_ctrl_data : SYS_MODULE_OBJ_INVALID;
     }
 

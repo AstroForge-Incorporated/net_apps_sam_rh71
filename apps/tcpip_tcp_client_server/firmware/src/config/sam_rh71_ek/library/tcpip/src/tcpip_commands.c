@@ -2897,7 +2897,7 @@ static void _Command_NetworkOnOff(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** 
         }
 
         // get the data passed at initialization
-        tcpipStackObj = TCPIP_STACK_Initialize(0, 0);
+        tcpipStackObj = TCPIP_STACK_Initialize(0);
         TCPIP_STACK_InitializeDataGet(tcpipStackObj, &tcpip_init_data);
         if(tcpip_init_data.pNetConf == 0)
         {
@@ -2995,7 +2995,7 @@ static void _Command_StackOnOff(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** ar
     if (memcmp(argv[1], "up", 2) == 0)
     {
         // try to get a stack handle
-        tcpipStackObj = TCPIP_STACK_Initialize(0, 0);
+        tcpipStackObj = TCPIP_STACK_Initialize(0);
         if ( tcpipStackObj != SYS_MODULE_OBJ_INVALID)
         {
             (*pCmdIO->pCmdApi->msg)(cmdIoParam, "Stack already up!\r\n");
@@ -3061,7 +3061,7 @@ static void _Command_StackOnOff(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** ar
 
         (*pCmdIO->pCmdApi->print)(cmdIoParam, "Restarting the stack with %d interface(s)\r\n", tcpipInit.nNets);
 
-        tcpipStackObj = TCPIP_STACK_Initialize(0, &tcpipInit.moduleInit);     // init the stack
+        tcpipStackObj = TCPIP_STACK_Initialize(&tcpipInit);     // init the stack
         if ( tcpipStackObj == SYS_MODULE_OBJ_INVALID)
         {
             msg = "Stack up failed\r\n";
@@ -3075,7 +3075,7 @@ static void _Command_StackOnOff(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** ar
     else if (memcmp(argv[1], "down", 4) == 0)
     {
         // try to get a handle
-        tcpipStackObj = TCPIP_STACK_Initialize(0, 0);
+        tcpipStackObj = TCPIP_STACK_Initialize(0);
         if ( tcpipStackObj == SYS_MODULE_OBJ_INVALID)
         {
             msg = "Stack down: cannot get a stack handle\r\n";
