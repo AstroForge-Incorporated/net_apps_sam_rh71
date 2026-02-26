@@ -313,8 +313,15 @@ static TCPIP_STACK_HEAP_RES _TCPIP_HEAP_Delete(TCPIP_STACK_HEAP_HANDLE heapH)
         if(hDcpt->_heapAllocatedUnits != 0)
     #endif
         {
-            //  deallocating a heap not completely de-allocated or corrupted
-            return (hDcpt->_lastHeapErr = TCPIP_STACK_HEAP_RES_IN_USE); 
+            // Heap not completely de-allocated (e.g. forced shutdown after link failure).
+            // Free the underlying buffer anyway so the next Initialize can malloc it again;
+            // without this the pointer is lost in KillStack and the 65 KB block leaks forever.
+            void* buf = hDcpt->allocatedBuffer;
+            void (*free_fn)(void*) = hDcpt->free_fnc;
+            OSAL_SEM_Delete(&hDcpt->_heapSemaphore);
+            memset(&hInst->heapObj, 0, sizeof(hInst->heapObj));
+            (*free_fn)(buf);
+            return (hDcpt->_lastHeapErr = TCPIP_STACK_HEAP_RES_IN_USE);
         }
 
         OSAL_SEM_Delete(&hDcpt->_heapSemaphore);
