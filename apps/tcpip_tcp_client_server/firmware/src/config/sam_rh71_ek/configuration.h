@@ -253,7 +253,7 @@ extern "C" {
 
 
 /*** IPv4 Configuration ***/
-#define TCPIP_IPV4_ARP_SLOTS                        10
+#define TCPIP_IPV4_ARP_SLOTS                        20
 #define TCPIP_IPV4_EXTERN_PACKET_PROCESS   false
 
 #define TCPIP_IPV4_COMMANDS false
