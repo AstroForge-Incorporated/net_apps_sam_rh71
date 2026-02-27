@@ -2545,7 +2545,12 @@ static bool _TcpFlush(TCB_STUB* pSkt)
     {   // The check remoteWindow != 0 stops us sending lots of
         // ACKs with len == 0, when the other host is slow
         // Send the TCP segment with all unacked bytes
-        return _TcpSend(pSkt, ACK, SENDTCP_RESET_TIMERS) == 0;
+        _TCP_SEND_RES send_res = _TcpSend(pSkt, ACK, SENDTCP_RESET_TIMERS);
+        if (send_res != 0) {
+            SYS_CONSOLE_PRINT("TCP send result (%d) lport: %d rport: %d: ", send_res, pSkt->localPort, pSkt->remotePort);
+            return false;
+        }
+        return true;
     }
 
     return false;
