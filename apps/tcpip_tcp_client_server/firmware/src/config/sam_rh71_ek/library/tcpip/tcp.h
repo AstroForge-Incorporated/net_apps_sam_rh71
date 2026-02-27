@@ -250,6 +250,7 @@ typedef enum
                                     // If 0, the socket will use the default global IPv4 TTL setting.
                                     // This option allows the user to specify a different TTL value.
     TCP_OPTION_TOS,                 // Sets the Type of Service (TOS) for IPv4 packets sent by the socket
+    TCP_OPTION_DEBUG,               // Enable per-socket send debug logging
 } TCP_SOCKET_OPTION;
 
 

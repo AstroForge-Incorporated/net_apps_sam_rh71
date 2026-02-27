@@ -2545,10 +2545,17 @@ static bool _TcpFlush(TCB_STUB* pSkt)
     {   // The check remoteWindow != 0 stops us sending lots of
         // ACKs with len == 0, when the other host is slow
         // Send the TCP segment with all unacked bytes
+        uint16_t bytesSent = (uint16_t)(pSkt->txHead - pSkt->txUnackedTail);
         _TCP_SEND_RES send_res = _TcpSend(pSkt, ACK, SENDTCP_RESET_TIMERS);
         if (send_res != 0) {
             SYS_CONSOLE_PRINT("TCP send result (%d) lport: %d rport: %d: ", send_res, pSkt->localPort, pSkt->remotePort);
             return false;
+        }
+        if(pSkt->dbgFlags.debugSend)
+        {
+            SYS_CONSOLE_PRINT("[TCP DEBUG] send ok | lport: %d rport: %d bytes: %u tick: %u\r\n",
+                pSkt->localPort, pSkt->remotePort, bytesSent,
+                (unsigned)SYS_TIME_CounterGet());
         }
         return true;
     }
@@ -6359,7 +6366,11 @@ bool TCPIP_TCP_OptionsSet(TCP_SOCKET hTCP, TCP_SOCKET_OPTION option, void* optPa
             case TCP_OPTION_TOS:
                 pSkt->tos = (uint8_t)(unsigned int)optParam;
                 return true;
-                
+
+            case TCP_OPTION_DEBUG:
+                pSkt->dbgFlags.debugSend = (optParam != 0) ? 1 : 0;
+                return true;
+
             default:
                 return false;   // not supported option
         }

@@ -237,7 +237,8 @@ typedef struct
         {
             uint8_t tracePrevState  : 4;            // socket previous traced state
             uint8_t traceStateFlag  : 1;            // socket state is traced
-            uint8_t reserved        : 3;            // padding; not used
+            uint8_t debugSend       : 1;            // enable per-socket send debug logging
+            uint8_t reserved        : 2;            // padding; not used
         };
     }dbgFlags;
 
