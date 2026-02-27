@@ -2545,7 +2545,9 @@ static bool _TcpFlush(TCB_STUB* pSkt)
     {   // The check remoteWindow != 0 stops us sending lots of
         // ACKs with len == 0, when the other host is slow
         // Send the TCP segment with all unacked bytes
-        uint16_t bytesSent = (uint16_t)(pSkt->txHead - pSkt->txUnackedTail);
+        uint16_t bytesSent = (pSkt->txHead >= pSkt->txUnackedTail)
+            ? (uint16_t)(pSkt->txHead - pSkt->txUnackedTail)
+            : (uint16_t)((pSkt->txEnd - pSkt->txUnackedTail) + (pSkt->txHead - pSkt->txStart));
         _TCP_SEND_RES send_res = _TcpSend(pSkt, ACK, SENDTCP_RESET_TIMERS);
         if (send_res != 0) {
             SYS_CONSOLE_PRINT("TCP send result (%d) lport: %d rport: %d: ", send_res, pSkt->localPort, pSkt->remotePort);
@@ -2553,8 +2555,10 @@ static bool _TcpFlush(TCB_STUB* pSkt)
         }
         if(pSkt->dbgFlags.debugSend)
         {
-            SYS_CONSOLE_PRINT("[TCP DEBUG] send ok | lport: %d rport: %d bytes: %u tick: %u\r\n",
+            SYS_CONSOLE_PRINT("[TCP DEBUG] send ok | lport: %d rport: %d bytes: %u heap_free: %u heap_max: %u tick: %u\r\n",
                 pSkt->localPort, pSkt->remotePort, bytesSent,
+                (unsigned)TCPIP_HEAP_FreeSize(tcpHeapH),
+                (unsigned)TCPIP_HEAP_MaxSize(tcpHeapH),
                 (unsigned)SYS_TIME_CounterGet());
         }
         return true;
