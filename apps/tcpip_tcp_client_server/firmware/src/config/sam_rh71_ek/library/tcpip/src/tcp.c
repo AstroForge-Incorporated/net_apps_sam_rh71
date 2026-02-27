@@ -120,6 +120,17 @@ static uint16_t             tcpDefRxSize;               // default size of the R
 
 static OSAL_SEM_HANDLE_TYPE tcpSemaphore;
 
+#if defined(TCPIP_STACK_DRAM_DEBUG_ENABLE)
+static void _TcpHeapNoMemHandler(TCPIP_STACK_HEAP_HANDLE heapH, size_t nBytes, int moduleId, int lineNo)
+{
+    SYS_CONSOLE_PRINT("[TCP HEAP OOM] mod: %d line: %d req: %u free: %u max: %u frags: %u\r\n",
+        moduleId, lineNo, (unsigned)nBytes,
+        (unsigned)TCPIP_HEAP_FreeSize(heapH),
+        (unsigned)TCPIP_HEAP_MaxSize(heapH),
+        (unsigned)TCPIP_HEAP_FragmentCount(heapH));
+}
+#endif  // defined(TCPIP_STACK_DRAM_DEBUG_ENABLE)
+
 #if (TCPIP_TCP_QUIET_TIME != 0)
 static uint32_t             tcpStartTime;               // time at which the TCP module starts, after the quiet time
 static bool                 tcpQuietDone;               // the quiet time has elapsed
@@ -691,6 +702,9 @@ bool TCPIP_TCP_Initialize(const TCPIP_STACK_MODULE_CTRL* const stackInit, const 
 
     sysTickFreq = SYS_TMR_TickCounterFrequencyGet(); 
     tcpHeapH = stackInit->memH;
+#if defined(TCPIP_STACK_DRAM_DEBUG_ENABLE)
+    TCPIP_HEAP_SetNoMemHandler(tcpHeapH, _TcpHeapNoMemHandler);
+#endif  // defined(TCPIP_STACK_DRAM_DEBUG_ENABLE)
     nSockets = pTcpInit->nSockets;
     // default initialization
     tcpDefTxSize = pTcpInit->sktTxBuffSize;
@@ -2555,10 +2569,11 @@ static bool _TcpFlush(TCB_STUB* pSkt)
         }
         if(pSkt->dbgFlags.debugSend)
         {
-            SYS_CONSOLE_PRINT("[TCP DEBUG] send ok | lport: %d rport: %d bytes: %u heap_free: %u heap_max: %u tick: %u\r\n",
+            SYS_CONSOLE_PRINT("[TCP DEBUG] send ok | lport: %d rport: %d bytes: %u heap_free: %u heap_max: %u frags: %u tick: %u\r\n",
                 pSkt->localPort, pSkt->remotePort, bytesSent,
                 (unsigned)TCPIP_HEAP_FreeSize(tcpHeapH),
                 (unsigned)TCPIP_HEAP_MaxSize(tcpHeapH),
+                (unsigned)TCPIP_HEAP_FragmentCount(tcpHeapH),
                 (unsigned)SYS_TIME_CounterGet());
         }
         return true;

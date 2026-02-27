@@ -491,6 +491,10 @@ size_t TCPIP_HEAP_FreeDebug(TCPIP_STACK_HEAP_HANDLE h, const void* ptr, int modu
 
 TCPIP_STACK_HEAP_RES TCPIP_HEAP_SetNoMemHandler(TCPIP_STACK_HEAP_HANDLE h, TCPIP_HEAP_NO_MEM_HANDLER handler);
 
+// Returns the number of discontiguous free blocks on the heap free list.
+// A high count relative to heap_free indicates fragmentation.
+size_t TCPIP_HEAP_FragmentCount(TCPIP_STACK_HEAP_HANDLE heapH);
+
 #else
 
 static __inline__ void* __attribute__((always_inline)) TCPIP_HEAP_MallocInline(TCPIP_STACK_HEAP_HANDLE h, size_t nBytes)

@@ -635,7 +635,26 @@ static TCPIP_STACK_HEAP_RES _TCPIP_HEAP_LastError(TCPIP_STACK_HEAP_HANDLE heapH)
 
 }
 
-#if defined(TCPIP_STACK_DRAM_DEBUG_ENABLE) 
+#if defined(TCPIP_STACK_DRAM_DEBUG_ENABLE)
+size_t TCPIP_HEAP_FragmentCount(TCPIP_STACK_HEAP_HANDLE heapH)
+{
+    TCPIP_HEAP_DCPT* hDcpt;
+    _headNode* ptr;
+    size_t count = 0;
+
+    hDcpt = _TCPIP_HEAP_ObjDcpt(heapH);
+    if(hDcpt)
+    {
+        (void)OSAL_SEM_Pend(&hDcpt->_heapSemaphore, OSAL_WAIT_FOREVER);
+        for(ptr = hDcpt->_heapHead; ptr != 0; ptr = ptr->next)
+        {
+            count++;
+        }
+        (void)OSAL_SEM_Post(&hDcpt->_heapSemaphore);
+    }
+    return count;
+}
+
 static size_t _TCPIP_HEAP_AllocSize(TCPIP_STACK_HEAP_HANDLE heapH, const void* ptr)
 {
     if(ptr)
