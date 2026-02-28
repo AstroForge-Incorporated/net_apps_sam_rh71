@@ -121,6 +121,8 @@ static uint16_t             tcpDefRxSize;               // default size of the R
 static OSAL_SEM_HANDLE_TYPE tcpSemaphore;
 
 #if defined(TCPIP_STACK_DRAM_DEBUG_ENABLE)
+static size_t _tcpLastFragCount = 0;
+
 static void _TcpHeapNoMemHandler(TCPIP_STACK_HEAP_HANDLE heapH, size_t nBytes, int moduleId, int lineNo)
 {
     SYS_CONSOLE_PRINT("[TCP HEAP OOM] mod: %d line: %d req: %u free: %u max: %u frags: %u\r\n",
@@ -2581,12 +2583,29 @@ static bool _TcpFlush(TCB_STUB* pSkt)
         }
         if(pSkt->dbgFlags.debugSend)
         {
+            size_t fragCount = TCPIP_HEAP_FragmentCount(tcpHeapH);
             SYS_CONSOLE_PRINT("[TCP DEBUG] send ok | lport: %d rport: %d bytes: %u heap_free: %u heap_max: %u frags: %u tick: %u\r\n",
                 pSkt->localPort, pSkt->remotePort, bytesSent,
                 (unsigned)TCPIP_HEAP_FreeSize(tcpHeapH),
                 (unsigned)TCPIP_HEAP_MaxSize(tcpHeapH),
-                (unsigned)TCPIP_HEAP_FragmentCount(tcpHeapH),
+                (unsigned)fragCount,
                 (unsigned)SYS_TIME_CounterGet());
+#if defined(TCPIP_STACK_DRAM_TRACE_ENABLE)
+            if(fragCount != _tcpLastFragCount)
+            {
+                _tcpLastFragCount = fragCount;
+                unsigned int n = TCPIP_HEAP_TraceGetEntriesNo(tcpHeapH, true);
+                for(unsigned int i = 0; i < n; i++)
+                {
+                    TCPIP_HEAP_TRACE_ENTRY e;
+                    if(TCPIP_HEAP_TraceGetEntry(tcpHeapH, i, &e))
+                    {
+                        SYS_CONSOLE_PRINT("  [TCP FRAG] mod: %d allocs: %d frees: %d curr: %d failed: %d\r\n",
+                            e.moduleId, e.nAllocs, e.nFrees, e.currAllocated, e.totFailed);
+                    }
+                }
+            }
+#endif  // defined(TCPIP_STACK_DRAM_TRACE_ENABLE)
         }
         return true;
     }
