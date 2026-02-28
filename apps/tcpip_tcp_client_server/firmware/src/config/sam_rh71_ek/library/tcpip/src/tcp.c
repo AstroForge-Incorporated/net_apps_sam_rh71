@@ -2584,12 +2584,23 @@ static bool _TcpFlush(TCB_STUB* pSkt)
         if(pSkt->dbgFlags.debugSend)
         {
             size_t fragCount = TCPIP_HEAP_FragmentCount(tcpHeapH);
-            SYS_CONSOLE_PRINT("[TCP DEBUG] send ok | lport: %d rport: %d bytes: %u heap_free: %u heap_max: %u frags: %u tick: %u\r\n",
+            uint16_t rxPending = (pSkt->rxHead >= pSkt->rxTail)
+                ? (uint16_t)(pSkt->rxHead - pSkt->rxTail)
+                : (uint16_t)((pSkt->rxEnd - pSkt->rxTail) + (pSkt->rxHead - pSkt->rxStart));
+            uint16_t rxSize = (uint16_t)(pSkt->rxEnd - pSkt->rxStart);
+            SYS_CONSOLE_PRINT("[TCP DEBUG] send ok | lport: %d rport: %d bytes: %u heap_free: %u heap_max: %u frags: %u rx_pending: %u rx_size: %u tick: %u\r\n",
                 pSkt->localPort, pSkt->remotePort, bytesSent,
                 (unsigned)TCPIP_HEAP_FreeSize(tcpHeapH),
                 (unsigned)TCPIP_HEAP_MaxSize(tcpHeapH),
                 (unsigned)fragCount,
+                (unsigned)rxPending,
+                (unsigned)rxSize,
                 (unsigned)SYS_TIME_CounterGet());
+            if(rxPending == rxSize)
+            {
+                SYS_CONSOLE_PRINT("[TCP DEBUG] RX WINDOW FULL lport: %d rport: %d — advertising zero window to remote!\r\n",
+                    pSkt->localPort, pSkt->remotePort);
+            }
 #if defined(TCPIP_STACK_DRAM_TRACE_ENABLE)
             if(fragCount != _tcpLastFragCount)
             {
