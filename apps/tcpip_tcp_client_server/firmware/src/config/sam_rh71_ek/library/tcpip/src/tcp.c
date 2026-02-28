@@ -128,6 +128,18 @@ static void _TcpHeapNoMemHandler(TCPIP_STACK_HEAP_HANDLE heapH, size_t nBytes, i
         (unsigned)TCPIP_HEAP_FreeSize(heapH),
         (unsigned)TCPIP_HEAP_MaxSize(heapH),
         (unsigned)TCPIP_HEAP_FragmentCount(heapH));
+#if defined(TCPIP_STACK_DRAM_TRACE_ENABLE)
+    unsigned int n = TCPIP_HEAP_TraceGetEntriesNo(heapH, true);
+    for(unsigned int i = 0; i < n; i++)
+    {
+        TCPIP_HEAP_TRACE_ENTRY e;
+        if(TCPIP_HEAP_TraceGetEntry(heapH, i, &e) && e.nAllocs != e.nFrees)
+        {
+            SYS_CONSOLE_PRINT("  [TCP HEAP OOM] mod: %d allocs: %d frees: %d curr: %d failed: %d\r\n",
+                e.moduleId, e.nAllocs, e.nFrees, e.currAllocated, e.totFailed);
+        }
+    }
+#endif  // defined(TCPIP_STACK_DRAM_TRACE_ENABLE)
 }
 #endif  // defined(TCPIP_STACK_DRAM_DEBUG_ENABLE)
 
