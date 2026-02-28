@@ -268,6 +268,7 @@ extern "C" {
 #define TCPIP_STACK_USE_INTERNAL_HEAP
 #define TCPIP_STACK_DRAM_DEBUG_ENABLE
 #define TCPIP_STACK_DRAM_TRACE_ENABLE
+#define TCPIP_STACK_DRAM_TRACE_SLOTS                10
 #define TCPIP_STACK_DRAM_SIZE                       65000
 #define TCPIP_STACK_DRAM_RUN_LIMIT                  2048
 
