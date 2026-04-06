@@ -71,7 +71,6 @@
 #include "wolfssl/wolfcrypt/port/pic32/crypt_wolfcryptcb.h"
 #include "system/console/sys_console.h"
 #include "system/console/src/sys_console_uart_definitions.h"
-#include "peripheral/mcan/plib_mcan0.h"
 #include "app.h"
 
 
